@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.PointRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("pointService")
@@ -27,5 +28,9 @@ public class PointService {
 
     public void addPoint(Point point) {
         pointRepository.save(point);
+    }
+
+    public List<Point> getAllPoints(){
+        return (List<Point>) pointRepository.findAll();
     }
 }

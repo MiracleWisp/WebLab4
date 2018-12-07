@@ -35,10 +35,15 @@ public class PointController {
         if (Math.abs(point.getY()) > 3) {
             return ResponseEntity.status(HttpStatus.OK).body("Error y");
         }
-        
+
         Point newPoint = new Point(point.getX(), point.getY(), point.getR());
         pointService.addPoint(newPoint);
         return ResponseEntity.status(HttpStatus.OK).body(newPoint);
+    }
+
+    @GetMapping("/point")
+    ResponseEntity<?> getAllPoints() {
+        return ResponseEntity.status(HttpStatus.OK).body(pointService.getAllPoints());
     }
 
 }
