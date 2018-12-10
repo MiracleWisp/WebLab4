@@ -23,13 +23,14 @@ public class PointController {
 
     @PostMapping("/point")
     ResponseEntity<?> postPoint(@RequestBody Point point) {
-        Set<Double> rightXR = new HashSet<>(Arrays.asList(-3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0, 5.0));
+        Set<Double> rightX = new HashSet<>(Arrays.asList(-3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0, 5.0));
+        Set<Double> rightR = new HashSet<>(Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0));
 
-        if (!rightXR.contains(point.getX())) {
+        if (!rightX.contains(point.getX())) {
             return ResponseEntity.status(HttpStatus.OK).body("Error x");
         }
 
-        if (!rightXR.contains(point.getR())) {
+        if (!rightR.contains(point.getR())) {
             return ResponseEntity.status(HttpStatus.OK).body("Error r");
         }
 
