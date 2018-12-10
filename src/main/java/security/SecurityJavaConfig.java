@@ -1,6 +1,7 @@
 package security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,14 +21,14 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
 
-    /*@Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;*/
-
     @Autowired
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Autowired
     private AuthenticationSuccessHandler successHandler;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final SimpleUrlAuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
 
@@ -39,6 +40,7 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/api/signup").permitAll()
                 .antMatchers("/api/**").authenticated()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .and()
@@ -53,20 +55,15 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        /*auth.jdbcAuthentication()
-                .usersByUsernameQuery("select login, password, true from users where login=?")
-                .authoritiesByUsernameQuery("select login, role from user_role where login=?")
+        auth.jdbcAuthentication()
+                .usersByUsernameQuery("select username, password, true from users where username=?")
+                .authoritiesByUsernameQuery("select username, \'USER\' from users where username=?")
                 .dataSource(dataSource)
-                .passwordEncoder(bCryptPasswordEncoder);*/
+                .passwordEncoder(bCryptPasswordEncoder);
 
-        auth.inMemoryAuthentication()
+        /*auth.inMemoryAuthentication()
                 .withUser("admin").password(encoder().encode("adminPass")).roles("ADMIN")
                 .and()
-                .withUser("user").password(encoder().encode("userPass")).roles("USER");
-    }
-
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
+                .withUser("user").password(encoder().encode("userPass")).roles("USER");*/
     }
 }
