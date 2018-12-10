@@ -18,6 +18,7 @@ import java.util.Set;
 public class PointController {
 
     @Autowired
+    private
     PointService pointService;
 
     @PostMapping("/point")
@@ -32,7 +33,7 @@ public class PointController {
             return ResponseEntity.status(HttpStatus.OK).body("Error r");
         }
 
-        if (Math.abs(point.getY()) > 3) {
+        if (point.getY() > 3 || point.getY() < -3) {
             return ResponseEntity.status(HttpStatus.OK).body("Error y");
         }
 
@@ -45,6 +46,5 @@ public class PointController {
     ResponseEntity<?> getAllPoints() {
         return ResponseEntity.status(HttpStatus.OK).body(pointService.getAllPoints());
     }
-
 
 }
