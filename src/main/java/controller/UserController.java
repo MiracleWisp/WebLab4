@@ -1,6 +1,7 @@
 package controller;
 
 import entity.User;
+import main.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
@@ -33,10 +34,10 @@ public class UserController {
                             "There is already a user registered with the username provided");
         }
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.OK).body("There is already a user registered with the username provided");
+            return ResponseEntity.status(HttpStatus.OK).body(new Response(false, "There is already a user registered with the username provided"));
         } else {
             userService.saveUser(user);
-            return ResponseEntity.status(HttpStatus.OK).body("User created");
+            return ResponseEntity.status(HttpStatus.OK).body(new Response(true, "User created"));
         }
     }
 }
