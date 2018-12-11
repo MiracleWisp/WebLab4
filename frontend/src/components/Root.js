@@ -10,7 +10,7 @@ const Root = ({store}) => (
     <Provider store={store}>
         <Router>
             <div>
-                <Route exact path="/" component={Header}/>
+                <Route path="/*" component={Header}/>
                 <Route path="/main" component={Main}/>
                 <Route path="/login" component={Login}/>
             </div>
