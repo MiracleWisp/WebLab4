@@ -1,12 +1,17 @@
 package controller;
 
 import entity.Point;
+import entity.User;
+import main.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import service.PointService;
+import service.UserService;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,34 +23,40 @@ import java.util.Set;
 public class PointController {
 
     @Autowired
-    private
-    PointService pointService;
+    private PointService pointService;
 
-    @PostMapping("/point")
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/points")
     ResponseEntity<?> postPoint(@RequestBody Point point) {
         Set<Double> rightX = new HashSet<>(Arrays.asList(-3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0, 5.0));
         Set<Double> rightR = new HashSet<>(Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0));
 
         if (!rightX.contains(point.getX())) {
-            return ResponseEntity.status(HttpStatus.OK).body("Error x");
+            return ResponseEntity.status(HttpStatus.OK).body(new Response(false, "Invalid X"));
         }
 
         if (!rightR.contains(point.getR())) {
-            return ResponseEntity.status(HttpStatus.OK).body("Error r");
+            return ResponseEntity.status(HttpStatus.OK).body(new Response(false, "Invalid R"));
         }
 
         if (point.getY() > 3 || point.getY() < -3) {
-            return ResponseEntity.status(HttpStatus.OK).body("Error y");
+            return ResponseEntity.status(HttpStatus.OK).body(new Response(false, "Invalid Y"));
         }
 
-        Point newPoint = new Point(point.getX(), point.getY(), point.getR());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userService.findUserByUsername( authentication.getName());
+        Point newPoint = new Point(point.getX(), point.getY(), point.getR(), currentUser);
         pointService.addPoint(newPoint);
-        return ResponseEntity.status(HttpStatus.OK).body(newPoint);
+        return ResponseEntity.status(HttpStatus.OK).body(new Response (true, newPoint));
     }
 
-    @GetMapping("/point")
+    @GetMapping("/points")
     ResponseEntity<?> getAllPoints() {
-        return ResponseEntity.status(HttpStatus.OK).body(pointService.getAllPoints());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userService.findUserByUsername( authentication.getName());
+        return ResponseEntity.status(HttpStatus.OK).body(currentUser.getPoints());
     }
 
 }

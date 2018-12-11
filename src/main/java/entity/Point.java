@@ -1,5 +1,6 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,10 +32,16 @@ public class Point implements Serializable{
     @Column(name = "inArea", nullable = false)
     boolean inArea;
 
-    public Point(double x, double y, double r) {
+    @JsonIgnore()
+    @JoinColumn(name = "username", nullable = false)
+    @ManyToOne
+    User user;
+
+    public Point(double x, double y, double r, User user) {
         this.x = x;
         this.y = y;
         this.r = r;
+        this.user = user;
         this.inArea = checkArea();
     }
 
