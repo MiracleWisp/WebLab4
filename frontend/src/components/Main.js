@@ -1,3 +1,4 @@
 import React from 'react';
+import Input from 'react-toolbox/lib/input/Input';
 
-export const Main = () => <h2>Main</h2>;
+export const Main = () => <Input type='text' label='Name' name='name'/>;
