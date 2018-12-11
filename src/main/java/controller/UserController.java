@@ -25,8 +25,6 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> createNewUser(@RequestBody @Valid User user, BindingResult bindingResult) {
-        System.out.println(user.getUsername());
-        System.out.println(user.getPassword());
         User userExists = userService.findUserByUsername(user.getUsername());
         if (userExists != null) {
             bindingResult
@@ -34,7 +32,7 @@ public class UserController {
                             "There is already a user registered with the username provided");
         }
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.OK).body(new Response(false, "There is already a user registered with the username provided"));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response(false, "There is already a user registered with the username provided"));
         } else {
             userService.saveUser(user);
             return ResponseEntity.status(HttpStatus.OK).body(new Response(true, "User created"));

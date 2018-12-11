@@ -1,13 +1,17 @@
 package controller;
 
 import entity.Point;
+import entity.User;
 import main.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import service.PointService;
+import service.UserService;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -19,8 +23,10 @@ import java.util.Set;
 public class PointController {
 
     @Autowired
-    private
-    PointService pointService;
+    private PointService pointService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/points")
     ResponseEntity<?> postPoint(@RequestBody Point point) {
@@ -39,14 +45,18 @@ public class PointController {
             return ResponseEntity.status(HttpStatus.OK).body(new Response(false, "Invalid Y"));
         }
 
-        Point newPoint = new Point(point.getX(), point.getY(), point.getR());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userService.findUserByUsername( authentication.getName());
+        Point newPoint = new Point(point.getX(), point.getY(), point.getR(), currentUser);
         pointService.addPoint(newPoint);
-        return ResponseEntity.status(HttpStatus.OK).body(new Response(true, newPoint));
+        return ResponseEntity.status(HttpStatus.OK).body(new Response (true, newPoint));
     }
 
     @GetMapping("/points")
     ResponseEntity<?> getAllPoints() {
-        return ResponseEntity.status(HttpStatus.OK).body(pointService.getAllPoints());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userService.findUserByUsername( authentication.getName());
+        return ResponseEntity.status(HttpStatus.OK).body(currentUser.getPoints());
     }
 
 }
