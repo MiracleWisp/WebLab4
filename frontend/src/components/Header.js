@@ -3,7 +3,7 @@ import logo from '../assets/plot.svg';
 import '../styles/App.css';
 import {Link} from "react-router-dom";
 
-const App = () => (
+const Header = () => (
     <header className="App-header">
         <img src={logo} className="App-logo" alt="logo"/>
         <nav>
@@ -22,4 +22,4 @@ const App = () => (
     </header>
 );
 
-export default App;
+export default Header;
