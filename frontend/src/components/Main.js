@@ -1,4 +1,12 @@
 import React from 'react';
-import Input from 'react-toolbox/lib/input/Input';
+import {connect} from 'react-redux';
+import LoginForm from './LoginForm'
+import Welcome from './Welcome'
 
-export const Main = () => <Input type='text' label='Name' name='name'/>;
+const Main = (props) => (
+    props.isAuthenticated ?
+        <Welcome/>:
+        <LoginForm/>
+);
+
+export default connect((state) => ({isAuthenticated: state.authReducer.isAuthenticated}))(Main);

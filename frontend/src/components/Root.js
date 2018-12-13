@@ -1,30 +1,44 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {Provider} from 'react-redux'
+import {connect} from 'react-redux'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import Header from './Header'
-import {Login} from "./Login";
-import {Main} from "./Main";
-import theme from '../assets/react-toolbox/theme'
-import '../assets/react-toolbox/theme.css'
-import ThemeProvider from 'react-toolbox/lib/ThemeProvider';
+import Main from './Main'
+import ProtectedRoute from './ProtectedRoute'
+import Checker from "./Checker"
+import {signIn, signOut} from "../redux/actions";
+import axios from "axios";
 
-const Root = ({store}) => (
-    <Provider store={store}>
-        <ThemeProvider theme={theme}>
+
+class Root extends React.Component {
+    constructor(props) {
+        super(props);
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/api/roles',
+            withCredentials: true
+        }).then(result => {
+            console.log(result.status);
+            result.status === 200 ?
+                this.props.signIn(result.data.successful, result.data.username) :
+                this.props.signOut()
+        }).catch(err => {
+            this.props.signOut();
+            console.log(err);
+        });
+    }
+
+    render() {
+        return (
             <Router>
                 <div>
                     <Route path="/*" component={Header}/>
-                    <Route path="/main" component={Main}/>
-                    <Route path="/login" component={Login}/>
+                    <ProtectedRoute path='/main' component={Checker}/>
+                    <Route exact path="/" component={Main}/>
                 </div>
             </Router>
-        </ThemeProvider>
-    </Provider>
-);
+        )
+    }
+}
 
-Root.propTypes = {
-    store: PropTypes.object.isRequired
-};
 
-export default Root
+export default connect(null, {signIn, signOut})(Root);
