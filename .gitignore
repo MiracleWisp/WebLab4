@@ -10,3 +10,4 @@ out
 gen
 /src/main/resources/application.properties
 target/
+frontend/build
