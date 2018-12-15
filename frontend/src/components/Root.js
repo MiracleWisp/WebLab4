@@ -7,6 +7,7 @@ import ProtectedRoute from './ProtectedRoute'
 import Checker from "./Checker"
 import {signIn, signOut} from "../redux/actions";
 import axios from "axios";
+import SignupForm from "./SignupForm";
 
 
 class Root extends React.Component {
@@ -34,6 +35,7 @@ class Root extends React.Component {
                     <Route path="/*" component={Header}/>
                     <ProtectedRoute path='/main' component={Checker}/>
                     <Route exact path="/" component={Main}/>
+                    <Route path='/signup' component={SignupForm}/>
                 </div>
             </Router>
         )

@@ -5,8 +5,6 @@ import {signIn, signOut} from "../redux/actions";
 import {connect} from 'react-redux';
 import '../styles/LoginForm.css';
 import axios from 'axios';
-import Chip from '@material-ui/core/Chip';
-import {Link} from "react-router-dom";
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -24,9 +22,7 @@ class LoginForm extends React.Component {
         e.preventDefault();
         this.setState({
             username:'',
-            password:'',
-            repeatedPassword:'',
-            isLogin: false
+            password:''
         })
     };
 
@@ -85,11 +81,9 @@ class LoginForm extends React.Component {
 
     render() {
         return (
-            this.state.isLogin ?
-                <div id='form-wrapper'>
+                <div className='form-wrapper'>
                     <form id='signin-form' noValidate autoComplete="off">
                         <TextField
-                            id="outlined-name"
                             label="Name"
                             value={this.state.username}
                             onChange={this.handleChange('username')}
@@ -97,7 +91,6 @@ class LoginForm extends React.Component {
                         />
                         <br/>
                         <TextField
-                            id="outlined-password"
                             type='password'
                             label="Password"
                             value={this.state.password}
@@ -105,42 +98,9 @@ class LoginForm extends React.Component {
                             margin="normal"
                         />
                         <br/>
-                        <a href='' onClick={this.showSignUp}>Нет аккаунта? Зарегистрироваться</a>
+                        <a href='/signup'>Нет аккаунта? Зарегистрироваться</a>
                         <Button variant="outlined" onClick={this.sign}>
                             SIGN IN
-                        </Button>
-                    </form>
-                </div> :
-                <div id='form-wrapper'>
-                    <form id='signin-form' noValidate autoComplete="off">
-                        <TextField
-                            id="outlined-name"
-                            label="Name"
-                            value={this.state.username}
-                            onChange={this.handleChange('username')}
-                            margin="normal"
-                        />
-                        <br/>
-                        <TextField
-                            id="outlined-password"
-                            type='password'
-                            label="Password"
-                            value={this.state.password}
-                            onChange={this.handleChange('password')}
-                            margin="normal"
-                        />
-                        <br/>
-                        <TextField
-                            id="outlined-password"
-                            type='password'
-                            label="Repeat Password"
-                            value={this.state.repeatedPassword}
-                            onChange={this.handleChange('repeatedPassword')}
-                            margin="normal"
-                        />
-                        <br/>
-                        <Button variant="outlined" onClick={this.signUp}>
-                            SIGN UP
                         </Button>
                     </form>
                 </div>

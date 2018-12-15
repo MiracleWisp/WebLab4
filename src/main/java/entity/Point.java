@@ -47,7 +47,6 @@ public class Point implements Serializable{
 
     private boolean fits2() {
         if (this.y < 0 || this.x > 0 || this.x < -this.r || this.y > this.r) return false;
-
         return this.y <= sqrt(pow(this.r, 2) - pow(this.x, 2));
 
     }
@@ -69,5 +68,11 @@ public class Point implements Serializable{
         return (this.fits2() || this.fits3() || this.fits4());
     }
 
-    //21205
+    public static void main(String[] args) {
+        https://playmaker.gq
+        for (int i = 0; i < 10; i++) {
+            System.out.println(i);
+        }
+    }
+
 }

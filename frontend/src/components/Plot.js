@@ -1,6 +1,5 @@
 import React from 'react';
 import plot from '../assets/plot.svg'
-import PointTable from './PointTable'
 
 class Plot extends React.Component {
 
