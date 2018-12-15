@@ -5,16 +5,53 @@ import {signIn, signOut} from "../redux/actions";
 import {connect} from 'react-redux';
 import '../styles/LoginForm.css';
 import axios from 'axios';
+import Chip from '@material-ui/core/Chip';
+import {Link} from "react-router-dom";
 
 class LoginForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {username: "", password: ""};
+        this.state = {username: "", password: "", repeatedPassword: "", isLogin: true};
     }
 
     handleChange = name => event => {
         this.setState({
             [name]: event.target.value,
+        });
+    };
+
+    showSignUp = (e) => {
+        e.preventDefault();
+        this.setState({
+            username:'',
+            password:'',
+            repeatedPassword:'',
+            isLogin: false
+        })
+    };
+
+    signUp = () => {
+        // TODO
+        // проверка, что два введенных пароля совпадают
+        axios({
+            method: 'post',
+            url: 'http://localhost:8080/api/signup',
+            data: {
+                username: this.state.username,
+                password: this.state.password
+            },
+            withCredentials: true
+        }).then(result => {
+            this.setState({
+                username:'',
+                password:'',
+                repeatedPassword:'',
+                isLogin:true
+            });
+            console.log("Вы успешно зарегистророваны")
+        }).catch(err => {
+            this.props.signOut();
+            console.log(err);
         });
     };
 
@@ -48,9 +85,8 @@ class LoginForm extends React.Component {
 
     render() {
         return (
-            this.props.isAuthenticated ?
-                <h2>YES</h2> :
-                <div>
+            this.state.isLogin ?
+                <div id='form-wrapper'>
                     <form id='signin-form' noValidate autoComplete="off">
                         <TextField
                             id="outlined-name"
@@ -58,7 +94,6 @@ class LoginForm extends React.Component {
                             value={this.state.username}
                             onChange={this.handleChange('username')}
                             margin="normal"
-                            variant="outlined"
                         />
                         <br/>
                         <TextField
@@ -68,14 +103,48 @@ class LoginForm extends React.Component {
                             value={this.state.password}
                             onChange={this.handleChange('password')}
                             margin="normal"
-                            variant="outlined"
                         />
                         <br/>
-                        <Button variant="contained" onClick={this.sign}>
+                        <a href='' onClick={this.showSignUp}>Нет аккаунта? Зарегистрироваться</a>
+                        <Button variant="outlined" onClick={this.sign}>
                             SIGN IN
                         </Button>
                     </form>
+                </div> :
+                <div id='form-wrapper'>
+                    <form id='signin-form' noValidate autoComplete="off">
+                        <TextField
+                            id="outlined-name"
+                            label="Name"
+                            value={this.state.username}
+                            onChange={this.handleChange('username')}
+                            margin="normal"
+                        />
+                        <br/>
+                        <TextField
+                            id="outlined-password"
+                            type='password'
+                            label="Password"
+                            value={this.state.password}
+                            onChange={this.handleChange('password')}
+                            margin="normal"
+                        />
+                        <br/>
+                        <TextField
+                            id="outlined-password"
+                            type='password'
+                            label="Repeat Password"
+                            value={this.state.repeatedPassword}
+                            onChange={this.handleChange('repeatedPassword')}
+                            margin="normal"
+                        />
+                        <br/>
+                        <Button variant="outlined" onClick={this.signUp}>
+                            SIGN UP
+                        </Button>
+                    </form>
                 </div>
+
         );
     }
 }
