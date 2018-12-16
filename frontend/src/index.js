@@ -9,9 +9,12 @@ import Root from "./components/Root";
 import Provider from "react-redux/es/components/Provider";
 
 const rootElement = document.getElementById("root");
-
 // redux
-ReactDOM.render(
-    <Provider store={store}>
-        <Root/>
-    </Provider>, rootElement);
+store.then(store => {
+    ReactDOM.render(
+        <Provider store={store}>
+            <Root/>
+        </Provider>, rootElement);
+}).catch(_ => {
+    console.log('Бывает');
+});

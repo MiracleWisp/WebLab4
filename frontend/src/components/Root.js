@@ -13,19 +13,6 @@ import SignupForm from "./SignupForm";
 class Root extends React.Component {
     constructor(props) {
         super(props);
-        axios({
-            method: 'get',
-            url: 'http://localhost:8080/api/roles',
-            withCredentials: true
-        }).then(result => {
-            console.log(result.status);
-            result.status === 200 ?
-                this.props.signIn(result.data.successful, result.data.username) :
-                this.props.signOut()
-        }).catch(err => {
-            this.props.signOut();
-            console.log(err);
-        });
     }
 
     render() {
