@@ -15,6 +15,7 @@ store.then(store => {
         <Provider store={store}>
             <Root/>
         </Provider>, rootElement);
-}).catch(_ => {
+}).catch(err => {
+    console.log(err);
     console.log('Бывает');
 });

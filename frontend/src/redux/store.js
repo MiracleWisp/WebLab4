@@ -9,15 +9,18 @@ async function getInitState() {
             isAuthenticated: false
         }
     };
-    const result = await axios({
-        method: 'get',
-        url: 'http://localhost:8080/api/roles',
-        withCredentials: true
-    });
-    console.log(result.status);
-    if (result.status === 200) {
-        state.authReducer.username = result.data.username;
-        state.authReducer.isAuthenticated = result.data.successful;
+    try {
+        const result = await axios({
+            method: 'get',
+            url: 'http://localhost:8080/api/roles',
+            withCredentials: true
+        });
+        if (result.status === 200) {
+            state.authReducer.username = result.data.username;
+            state.authReducer.isAuthenticated = result.data.successful;
+        }
+    } catch (e) {
+        console.log("")
     }
     return createStore(rootReducer, state, window.__REDUX_DEVTOOLS_EXTENSION__
         && window.__REDUX_DEVTOOLS_EXTENSION__())
