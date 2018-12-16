@@ -1,20 +1,36 @@
-import {CHANGE_R} from "../actionTypes";
+import {ADD_POINT, CHANGE_R, SET_POINTS} from "../actionTypes";
 
 const initialState = {
-    allIds: [],
+    points: [],
     r: 1
 };
 
-export default function (state = initialState, action) {
+export function pointsReducer(state = initialState, action) {
     switch (action.type) {
-        case CHANGE_R: {
-            const r = action.r;
+        case ADD_POINT: {
+            const points = state.points;
+            points.push(action.point);
             return {
                 ...state,
-                r,
-                allIds: [...state.allIds]
+                points
+
+            };
+        }
+
+        case SET_POINTS: {
+            return {
+                ...state,
+                points: action.points
             }
         }
+
+        case CHANGE_R: {
+            return {
+                ...state,
+                r: action.r
+            }
+        }
+
         default:
             return state;
     }

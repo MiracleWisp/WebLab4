@@ -1,10 +1,16 @@
-import {ADD_POINT, CHANGE_R, SIGN_IN, SIGN_OUT, SIGN_UP} from "./actionTypes";
+import {ADD_POINT, SET_POINTS, CHANGE_R, SIGN_IN, SIGN_OUT, SIGN_UP} from "./actionTypes";
 
-export const addPoint = (x, y) => ({
-        type: ADD_POINT,
-        x,
-        y
+export const addPoint = (point) => ({
+    type: ADD_POINT,
+    point
 });
+
+export const setPoints =
+    (points) =>
+    ({
+        type: SET_POINTS,
+        points
+    });
 
 export const signUp = (login, password) => ({
     type: SIGN_UP,
@@ -24,5 +30,5 @@ export const signOut = () => ({
 
 export const changeR = (r) => ({
     type: CHANGE_R,
-    r
+    r: r
 });

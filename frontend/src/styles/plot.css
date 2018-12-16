@@ -1,0 +1,38 @@
+#svg_plot {
+    background: white;
+    border-radius: 4px;
+    border: 1px solid hsl(0, 0%, 80%);
+    cursor: cell;
+    padding: 10px;
+}
+
+.cls-1, .cls-3 {
+    fill: aqua;
+}
+
+.cls-2 {
+    fill: none;
+}
+
+.cls-2, .cls-3 {
+    stroke: #000;
+    stroke-miterlimit: 10;
+    stroke-width: 0.5px;
+}
+
+.cls-4 {
+    font-size: 12px;
+}
+
+.cls-4, .cls-5 {
+    font-family: MyriadPro-Regular, Myriad Pro, serif;
+}
+
+.cls-5 {
+    font-size: 14px;
+}
+
+#svg_plot > polygon, #svg_plot > path, #svg_plot > rect {
+    pointer-events: none;
+    cursor: crosshair;
+}

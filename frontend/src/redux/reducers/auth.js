@@ -13,9 +13,6 @@ export function authReducer(state = {isAuthenticated: false, username: ""}, acti
                 username: ""
             };
         default:
-            return {
-                isAuthenticated: false,
-                username: ""
-            };
+            return state;
     }
 }

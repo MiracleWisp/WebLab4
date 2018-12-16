@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
+import compose from 'recompose/compose';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,7 +15,7 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import axios from "axios";
+import {connect} from "react-redux";
 
 const actionsStyles = theme => ({
     root: {
@@ -45,7 +46,7 @@ class TablePaginationActions extends React.Component {
     };
 
     render() {
-        const { classes, count, page, rowsPerPage, theme } = this.props;
+        const {classes, count, page, rowsPerPage, theme} = this.props;
 
         return (
             <div className={classes.root}>
@@ -54,28 +55,28 @@ class TablePaginationActions extends React.Component {
                     disabled={page === 0}
                     aria-label="First Page"
                 >
-                    {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+                    {theme.direction === 'rtl' ? <LastPageIcon/> : <FirstPageIcon/>}
                 </IconButton>
                 <IconButton
                     onClick={this.handleBackButtonClick}
                     disabled={page === 0}
                     aria-label="Previous Page"
                 >
-                    {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                    {theme.direction === 'rtl' ? <KeyboardArrowRight/> : <KeyboardArrowLeft/>}
                 </IconButton>
                 <IconButton
                     onClick={this.handleNextButtonClick}
                     disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                     aria-label="Next Page"
                 >
-                    {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                    {theme.direction === 'rtl' ? <KeyboardArrowLeft/> : <KeyboardArrowRight/>}
                 </IconButton>
                 <IconButton
                     onClick={this.handleLastPageButtonClick}
                     disabled={page >= Math.ceil(count / rowsPerPage) - 1}
                     aria-label="Last Page"
                 >
-                    {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+                    {theme.direction === 'rtl' ? <FirstPageIcon/> : <LastPageIcon/>}
                 </IconButton>
             </div>
         );
@@ -91,10 +92,9 @@ TablePaginationActions.propTypes = {
     theme: PropTypes.object.isRequired,
 };
 
-const TablePaginationActionsWrapped = withStyles(actionsStyles, { withTheme: true })(
+const TablePaginationActionsWrapped = withStyles(actionsStyles, {withTheme: true})(
     TablePaginationActions,
 );
-
 
 
 const styles = theme => ({
@@ -112,93 +112,79 @@ const styles = theme => ({
 
 class PointTable extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            points: [
-            ],
             page: 0,
             rowsPerPage: 5,
         };
-        axios({
-            method: 'get',
-            url: 'http://localhost:8080/api/points',
-            withCredentials: true
-        }).then(result => {
-            this.setState({
-                points: result.data
-            })
-        }).catch(err => {
-            console.log(err);
-        });
     };
-
 
 
     handleChangePage = (event, page) => {
-        this.setState({ page });
+        this.setState({page});
     };
 
     handleChangeRowsPerPage = event => {
-        this.setState({ rowsPerPage: +event.target.value });
+        this.setState({rowsPerPage: +event.target.value});
     };
 
     render() {
-        const { classes } = this.props;
-        const { points, rowsPerPage, page } = this.state;
+        const {classes, points} = this.props;
+        const {rowsPerPage, page} = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, points.length - page * rowsPerPage);
 
         return (
-            <Paper className={classes.root}>
-                <div className={classes.tableWrapper}>
-                    <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell >X</TableCell>
-                                <TableCell >Y</TableCell>
-                                <TableCell >R</TableCell>
-                                <TableCell>in area</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {points.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-                                return (
-                                    <TableRow key={row.pointId}>
-                                        <TableCell component="th" scope="row">
-                                            {row.x}
-                                        </TableCell>
-                                        <TableCell align="right">{row.y}</TableCell>
-                                        <TableCell align="right">{row.r}</TableCell>
-                                        <TableCell align="right">{row.inArea ? 'true' : 'false'}</TableCell>
-                                    </TableRow>
-                                );
-                            })}
-                            {emptyRows > 0 && (
-                                <TableRow style={{ height: 48 * emptyRows }}>
-                                    <TableCell colSpan={6} />
+            <div className="table-wrap">
+                <Paper className={classes.root}>
+                    <div className={classes.tableWrapper}>
+                        <Table className={classes.table}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>X</TableCell>
+                                    <TableCell>Y</TableCell>
+                                    <TableCell>R</TableCell>
+                                    <TableCell>in area</TableCell>
                                 </TableRow>
-                            )}
-                        </TableBody>
-                        <TableFooter>
-                            <TableRow>
-                                <TablePagination
-                                    rowsPerPageOptions={[5, 10, 25]}
-                                    colSpan={3}
-                                    count={points.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    SelectProps={{
-                                        native: true,
-                                    }}
-                                    onChangePage={this.handleChangePage}
-                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                    ActionsComponent={TablePaginationActionsWrapped}
-                                />
-                            </TableRow>
-                        </TableFooter>
-                    </Table>
-                </div>
-            </Paper>
+                            </TableHead>
+                            <TableBody>
+                                {this.props.points.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+                                    return (
+                                        <TableRow key={row.pointId}>
+                                            <TableCell component="th" scope="row">{row.x}</TableCell>
+                                            <TableCell align="right">{row.y}</TableCell>
+                                            <TableCell align="right">{row.r}</TableCell>
+                                            <TableCell align="right">{row.inArea ? 'true' : 'false'}</TableCell>
+                                        </TableRow>
+                                    );
+                                })}
+                                {emptyRows > 0 && (
+                                    <TableRow style={{height: 48 * emptyRows}}>
+                                        <TableCell colSpan={6}/>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                            <TableFooter>
+                                <TableRow>
+                                    <TablePagination
+                                        rowsPerPageOptions={[5, 10, 25]}
+                                        colSpan={3}
+                                        count={points.length}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        SelectProps={{
+                                            native: true,
+                                        }}
+                                        onChangePage={this.handleChangePage}
+                                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                        ActionsComponent={TablePaginationActionsWrapped}
+                                    />
+                                </TableRow>
+                            </TableFooter>
+                        </Table>
+                    </div>
+                </Paper>
+            </div>
         );
     }
 }
@@ -207,4 +193,13 @@ PointTable.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(PointTable);
+const mapStateToProps = function(state) {
+    return {
+        points: state.pointsReducer.points
+    }
+};
+
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps),
+)(PointTable);
