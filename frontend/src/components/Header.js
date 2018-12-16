@@ -32,6 +32,9 @@ class Header extends Component {
                                     {this.props.isAuthenticated ? 'Профиль' : 'Войти'}
                                 </Button>
                             </li>
+                            {!this.props.isAuthenticated ? <li>
+                                <Button className="headerButton" component={Link} to="/signup">Зарегистроваться</Button>
+                            </li> : ''}
                             {this.props.isAuthenticated ? <li>
                                 <Button className="headerButton" component={Link} to="/main">График</Button>
                             </li> : ''}

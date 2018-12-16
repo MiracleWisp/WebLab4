@@ -9,45 +9,12 @@ import axios from 'axios';
 class LoginForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {username: "", password: "", repeatedPassword: "", isLogin: true};
+        this.state = {username: "", password: "", msg:''};
     }
 
     handleChange = name => event => {
         this.setState({
             [name]: event.target.value,
-        });
-    };
-
-    showSignUp = (e) => {
-        e.preventDefault();
-        this.setState({
-            username:'',
-            password:''
-        })
-    };
-
-    signUp = () => {
-        // TODO
-        // проверка, что два введенных пароля совпадают
-        axios({
-            method: 'post',
-            url: 'http://localhost:8080/api/signup',
-            data: {
-                username: this.state.username,
-                password: this.state.password
-            },
-            withCredentials: true
-        }).then(result => {
-            this.setState({
-                username:'',
-                password:'',
-                repeatedPassword:'',
-                isLogin:true
-            });
-            console.log("Вы успешно зарегистророваны")
-        }).catch(err => {
-            this.props.signOut();
-            console.log(err);
         });
     };
 
@@ -73,6 +40,7 @@ class LoginForm extends React.Component {
             this.props.signIn(result.data.successful, result.data.username)
         }).catch(err => {
             this.props.signOut();
+            this.setState({msg: 'Неверное имя пользователя или пароль'});
             console.log(err);
         });
 
@@ -98,11 +66,10 @@ class LoginForm extends React.Component {
                             margin="normal"
                         />
                         <br/>
+                        <div>{this.state.msg}</div>
                         <Button variant="outlined" onClick={this.sign}>
                             SIGN IN
                         </Button>
-                        <br/>
-                        <a href='/signup'>Нет аккаунта? Зарегистрироваться</a> <br/>
                     </form>
                 </div>
 
