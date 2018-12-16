@@ -7,27 +7,19 @@ import axios from "axios";
 import {signOut} from "../redux/actions";
 
 class Header extends Component {
-
-    constructor(props) {
-        super(props);
-        // this.signOut = signOut.bind(this);
-    }
-
-    signOut() {
+    signOut = () => {
         axios({
             method: 'post',
             url: 'http://localhost:8080/api/logout',
             withCredentials: true
         }).then(
             () => {
-                //TODO: передать нормальный this
-                console.log(this);
                 this.props.signOut();
             }
         ).catch(err => {
             console.log(err);
         });
-    }
+    };
 
     render() {
         return (
