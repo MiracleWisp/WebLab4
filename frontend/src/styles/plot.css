@@ -4,6 +4,8 @@
     border: 1px solid hsl(0, 0%, 80%);
     cursor: crosshair;
     padding: 10px;
+    width: 430px;
+    height: 430px;
 }
 
 .cls-1, .cls-3 {

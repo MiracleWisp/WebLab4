@@ -98,10 +98,11 @@ class LoginForm extends React.Component {
                             margin="normal"
                         />
                         <br/>
-                        <a href='/signup'>Нет аккаунта? Зарегистрироваться</a> <br/>
                         <Button variant="outlined" onClick={this.sign}>
                             SIGN IN
                         </Button>
+                        <br/>
+                        <a href='/signup'>Нет аккаунта? Зарегистрироваться</a> <br/>
                     </form>
                 </div>
 

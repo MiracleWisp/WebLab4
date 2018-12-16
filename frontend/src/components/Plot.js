@@ -21,7 +21,6 @@ class Plot extends React.Component {
     //     }
     //
     //     function addPoint(x, y, r) {
-    //         // TODO: backend call
     //         // document.getElementById("pointForm:user_X_hidden").value = x;
     //         remoteX([{name: 'x_value', value: x}]);
     //         remoteY([{name: 'y_value', value: y}]);
@@ -47,14 +46,15 @@ class Plot extends React.Component {
     }
 
     convertXReverse(cx) {
-        return (cx - 233) * +this.props.r / 180;
+        return (cx - 225) * +this.props.r / 175;
     }
 
     convertYReverse(cy) {
-        return (cy - 233) * +this.props.r / -180;
+        return (cy - 225) * +this.props.r / -175;
     }
 
     plotClicked(event) {
+        console.log(event.nativeEvent.offsetX);
         this.addPointAxios({
             x: this.convertXReverse(+event.nativeEvent.offsetX),
             y: this.convertYReverse(+event.nativeEvent.offsetY),

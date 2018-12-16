@@ -13,14 +13,21 @@
     grid-area: a;
     width: 450px;
     height: 450px;
+    justify-self: start;
 
 }
 
 .form-wrap {
     grid-area: b;
-    width: 400px;
+    width: 450px;
     display: grid;
     grid-gap: 20px;
+    justify-self: end;
+}
+
+.table-wrap {
+    grid-area: c;
+    width: 100%;
 }
 
 .alert-text {
@@ -31,8 +38,23 @@
     margin-bottom: 5px !important;
 }
 
-.table-wrap {
-    grid-area: c;
-    width: 100%;
+@media screen and (max-width: 708px) {
+    .content-wrap {
+        grid-template: initial;
+        grid-template-columns: initial;
+    }
 
+    .plot-wrap, .form-wrap, .table-wrap {
+        grid-area: initial;
+    }
+
+    .table-wrap {
+        width: 450px;
+    }
+}
+
+@media screen and (min-width: 708px) and (max-width: 1175px) {
+    body {
+        background-color: aliceblue;
+    }
 }

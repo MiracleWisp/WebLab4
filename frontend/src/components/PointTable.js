@@ -151,8 +151,8 @@ class PointTable extends React.Component {
                                 {this.props.points.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
                                     return (
                                         <TableRow key={row.pointId}>
-                                            <TableCell component="th" scope="row">{row.x}</TableCell>
-                                            <TableCell align="right">{row.y}</TableCell>
+                                            <TableCell component="th" scope="row">{row.x.toFixed(3)}</TableCell>
+                                            <TableCell align="right">{row.y.toFixed(3)}</TableCell>
                                             <TableCell align="right">{row.r}</TableCell>
                                             <TableCell align="right">{row.inArea ? 'true' : 'false'}</TableCell>
                                         </TableRow>
