@@ -45,11 +45,16 @@ class Form extends Component {
     };
 
     handleChangeY = (event) => {
-        this.setState({y: event.target.value});
+        let yVal = event.target.value;
+        this.setState({y: yVal, invalid: !this.validateY(yVal)});
     };
 
     handleChangeR = (r) => {
         this.props.changeR(r.value);
+    };
+
+    validateY = (yVal) => {
+        return !isNaN(+yVal) && (yVal >= -3) && (yVal <= 3);
     };
 
     addPointAxios = () => {
@@ -98,12 +103,17 @@ class Form extends Component {
                         onChange={this.handleChangeX}
                     />
                 </FormControl>
-                <TextField
-                    value={this.state.y}
-                    onChange={this.handleChangeY}
-                    label="Enter Y"
-                />
+                <FormControl>
+                    <TextField
+                        value={this.state.y}
+                        onChange={this.handleChangeY}
+                        label="Enter Y"
+                    />
+                    <FormHelperText hidden={!this.state.invalid} className="alert-text">Invalid value</FormHelperText>
+                </FormControl>
                 <Button
+                    variant="outlined"
+                    disabled={this.state.invalid}
                     onClick={this.addPointAxios}
                 >ADD</Button>
             </div>

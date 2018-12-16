@@ -23,6 +23,10 @@
     grid-gap: 20px;
 }
 
+.alert-text {
+    color: #ff0000 !important;
+}
+
 .helper-text {
     margin-bottom: 5px !important;
 }

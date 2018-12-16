@@ -6,7 +6,7 @@ import axios from "axios";
 
 class Plot extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.plotClicked = this.plotClicked.bind(this);
 
@@ -62,27 +62,33 @@ class Plot extends React.Component {
         });
     }
 
+    static validatePoint(point) {
+        return (point.x <= 5 && point.x >= -3 && point.y <= 3 && point.y >= -3);
+    }
+
     addPointAxios = (point) => {
-        axios({
-            method: 'post',
-            url: 'http://localhost:8080/api/points',
-            data: point,
-            withCredentials: true
-        }).then(result => {
-            console.log(result);
-            if (!result.data.successful) {
-                this.setErrMessage(result.data.data);
-                return false;
-            } else {
-                this.props.addPoint(result.data.data);
-                return true;
-            }
-        }).catch(err => {
-            console.log(err);
-        });
+        if (Plot.validatePoint(point)) {
+            axios({
+                method: 'post',
+                url: 'http://localhost:8080/api/points',
+                data: point,
+                withCredentials: true
+            }).then(result => {
+                console.log(result);
+                if (!result.data.successful) {
+                    this.setErrMessage(result.data.data);
+                    return false;
+                } else {
+                    this.props.addPoint(result.data.data);
+                    return true;
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+        }
     };
 
-    setErrMessage(message){
+    setErrMessage(message) {
         console.log("Error: " + message);
     }
 
@@ -113,10 +119,14 @@ class Plot extends React.Component {
                     <line className="cls-2" x1="154" y1="30" x2="146" y2="30"/>
                     <line className="cls-2" x1="30" y1="154" x2="30" y2="146"/>
 
-                    <line id="frame-top" className="frame" x1="-90" y1="-210" x2="390" y2="-210"/>
-                    <line id="frame-bot" className="frame" x1="-90" y1="750" x2="390" y2="750"/>
-                    <line id="frame-left" className="frame" x1="-90" y1="-210" x2="-90" y2="750"/>
-                    <line id="frame-right" className="frame" x1="390" y1="-210" x2="390" y2="750"/>
+                    <line id="frame-top" className="frame" x1={this.convertX(-3)} y1={this.convertY(3)}
+                          x2={this.convertX(5)} y2={this.convertY(3)}/>
+                    <line id="frame-bot" className="frame" x1={this.convertX(-3)} y1={this.convertY(-3)}
+                          x2={this.convertX(5)} y2={this.convertY(-3)}/>
+                    <line id="frame-left" className="frame" x1={this.convertX(-3)} y1={this.convertY(3)}
+                          x2={this.convertX(-3)} y2={this.convertY(-3)}/>
+                    <line id="frame-right" className="frame" x1={this.convertX(5)} y1={this.convertY(3)}
+                          x2={this.convertX(5)} y2={this.convertY(-3)}/>
 
                     <text className="cls-4" transform="translate(30 143)">-
                         <tspan>{this.props.r}</tspan>

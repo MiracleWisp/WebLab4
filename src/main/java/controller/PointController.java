@@ -32,7 +32,7 @@ public class PointController {
     ResponseEntity<?> postPoint(@RequestBody Point point) {
         Set<Double> rightR = new HashSet<>(Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0));
 
-        if (point.getX() < -3 && point.getX() > 5) {
+        if (point.getX() < -3 || point.getX() > 5) {
             return ResponseEntity.status(HttpStatus.OK).body(new Response(false, "Invalid X"));
         }
 
