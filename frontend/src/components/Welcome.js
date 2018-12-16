@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom'
 const Welcome = (props) => (
     <div id='welcome'>
         Добро пожаловать, {props.username} <br/>
-        Чтобы перейти к нашей охуенной лабе, нажмите кнопку ниже <br/>
+        Чтобы перейти к нашей замечательной лабе, нажмите кнопку ниже <br/>
         <Button variant="contained" component={Link} to="/main">
             ПЕРЕЙТИ К ГРАФИКУ
         </Button>

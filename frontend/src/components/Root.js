@@ -6,7 +6,6 @@ import Main from './Main'
 import ProtectedRoute from './ProtectedRoute'
 import Checker from "./Checker"
 import {signIn, signOut} from "../redux/actions";
-import axios from "axios";
 import SignupForm from "./SignupForm";
 
 
