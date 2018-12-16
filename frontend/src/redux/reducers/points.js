@@ -8,7 +8,7 @@ const initialState = {
 export function pointsReducer(state = initialState, action) {
     switch (action.type) {
         case ADD_POINT: {
-            const points = state.points;
+            const points = state.points.slice(0);
             points.push(action.point);
             return {
                 ...state,

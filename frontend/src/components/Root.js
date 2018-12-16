@@ -10,10 +10,6 @@ import SignupForm from "./SignupForm";
 
 
 class Root extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <Router>
