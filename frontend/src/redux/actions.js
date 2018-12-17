@@ -1,4 +1,4 @@
-import {ADD_POINT, SET_POINTS, CHANGE_R, SIGN_IN, SIGN_OUT, SIGN_UP} from "./actionTypes";
+import {ADD_POINT, SET_POINTS, CHANGE_R, SIGN_IN, SIGN_OUT, SIGN_UP, SET_CONNECTION} from "./actionTypes";
 
 export const addPoint = (point) => ({
     type: ADD_POINT,
@@ -31,4 +31,9 @@ export const signOut = () => ({
 export const changeR = (r) => ({
     type: CHANGE_R,
     r: r
+});
+
+export const setConnection = (successful) => ({
+    type: SET_CONNECTION,
+    successful
 });
