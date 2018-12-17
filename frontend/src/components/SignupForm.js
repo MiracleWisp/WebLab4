@@ -19,8 +19,9 @@ class SignupForm extends React.Component {
     };
 
     signUp = () => {
-        let username = this.state.username;
-        let password = this.state.password;
+        const username = this.state.username;
+        const password = this.state.password;
+        // const userRegEx = /[0-9]/;
         if (username.length > 10) {
             this.setState({msg: 'Username too long'});
             return false;
@@ -48,13 +49,17 @@ class SignupForm extends React.Component {
             },
             withCredentials: true
         }).then(_ => {
+            this.props.setConnection(true);
             this.setState({
                 msg: 'Вы успешно зарегестрированы'
             });
         }).catch(err => {
             if (err.response.status === 409) this.setState({
                 msg: 'Имя пользователя уже занято'
-            }); else console.log(err);
+            }); else {
+                console.log(err);
+                this.props.setConnection(false);
+            }
         });
     };
 

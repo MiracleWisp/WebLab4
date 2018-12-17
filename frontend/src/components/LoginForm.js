@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {signIn, signOut} from "../redux/actions";
+import {setConnection, signIn, signOut} from "../redux/actions";
 import {connect} from 'react-redux';
 import '../styles/LoginForm.css';
 import axios from 'axios';
@@ -9,7 +9,7 @@ import axios from 'axios';
 class LoginForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {username: "", password: "", msg:''};
+        this.state = {username: "", password: "", msg: ''};
     }
 
     handleChange = name => event => {
@@ -28,6 +28,7 @@ class LoginForm extends React.Component {
             data: formData,
             withCredentials: true
         }).then(result => {
+            this.props.setConnection(true);
             if (result.status !== 200) {
                 return this.props.signOut()
             }
@@ -39,9 +40,13 @@ class LoginForm extends React.Component {
         }).then(result => {
             this.props.signIn(result.data.successful, result.data.username)
         }).catch(err => {
-            this.props.signOut();
-            this.setState({msg: 'Неверное имя пользователя или пароль'});
-            console.log(err);
+            if (err.response) {
+                this.setState({msg: 'Неверное имя пользователя или пароль'});
+                this.props.signOut();
+            } else {
+                console.log(JSON.stringify(err));
+                this.props.setConnection(false);
+            }
         });
 
 
@@ -49,29 +54,29 @@ class LoginForm extends React.Component {
 
     render() {
         return (
-                <div className='form-wrapper'>
-                    <form id='signin-form' noValidate autoComplete="off">
-                        <TextField
-                            label="Name"
-                            value={this.state.username}
-                            onChange={this.handleChange('username')}
-                            margin="normal"
-                        />
-                        <br/>
-                        <TextField
-                            type='password'
-                            label="Password"
-                            value={this.state.password}
-                            onChange={this.handleChange('password')}
-                            margin="normal"
-                        />
-                        <br/>
-                        <div>{this.state.msg}</div>
-                        <Button variant="outlined" onClick={this.sign}>
-                            SIGN IN
-                        </Button>
-                    </form>
-                </div>
+            <div className='form-wrapper'>
+                <form id='signin-form' noValidate autoComplete="off">
+                    <TextField
+                        label="Name"
+                        value={this.state.username}
+                        onChange={this.handleChange('username')}
+                        margin="normal"
+                    />
+                    <br/>
+                    <TextField
+                        type='password'
+                        label="Password"
+                        value={this.state.password}
+                        onChange={this.handleChange('password')}
+                        margin="normal"
+                    />
+                    <br/>
+                    <div>{this.state.msg}</div>
+                    <Button variant="outlined" onClick={this.sign}>
+                        SIGN IN
+                    </Button>
+                </form>
+            </div>
 
         );
     }
@@ -79,5 +84,5 @@ class LoginForm extends React.Component {
 
 export default connect(
     null,
-    {signIn, signOut}
+    {signIn, signOut, setConnection}
 )(LoginForm);

@@ -6,7 +6,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from 'react-select'
 import connect from "react-redux/es/connect/connect";
 import axios from "axios";
-import {addPoint, changeR} from "../redux/actions";
+import {addPoint, changeR, setConnection} from "../redux/actions";
 
 const rs = [
     {label: 1},
@@ -68,6 +68,7 @@ class Form extends Component {
             },
             withCredentials: true
         }).then(result => {
+            this.props.setConnection(true);
             if (!result.data.successful) {
                 this.setErrMessage(result.data.data);
                 return false;
@@ -77,12 +78,13 @@ class Form extends Component {
             }
         }).catch(err => {
             console.log(err);
+            this.props.setConnection(false);
         });
     };
 
     render() {
         return (
-            <div className="form-wrap">
+                <div className="form-wrap">
                 <div id="form_header">
                     <h2>Add a point</h2>
                 </div>
@@ -131,5 +133,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {addPoint, changeR}
+    {addPoint, changeR, setConnection}
 )(Form);

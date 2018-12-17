@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/plot.css'
 import {connect} from 'react-redux'
-import {addPoint} from "../redux/actions";
+import {addPoint, setConnection} from "../redux/actions";
 import axios from "axios";
 
 class Plot extends React.Component {
@@ -73,6 +73,7 @@ class Plot extends React.Component {
                 data: point,
                 withCredentials: true
             }).then(result => {
+                this.props.setConnection(true);
                 if (!result.data.successful) {
                     this.setErrMessage(result.data.data);
                     return false;
@@ -82,6 +83,7 @@ class Plot extends React.Component {
                 }
             }).catch(err => {
                 console.log(err);
+                this.props.setConnection(false);
             });
         }
     };
@@ -169,9 +171,10 @@ class Plot extends React.Component {
 
 const mapStateToProps = function (state) {
     return {
+        isConnected: state.connectionReducer.isConnected,
         points: state.pointsReducer.points,
         r: state.pointsReducer.r
     }
 };
 
-export default connect(mapStateToProps, {addPoint})(Plot);
+export default connect(mapStateToProps, {addPoint, setConnection})(Plot);
