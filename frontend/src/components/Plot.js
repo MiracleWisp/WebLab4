@@ -54,7 +54,6 @@ class Plot extends React.Component {
     }
 
     plotClicked(event) {
-        console.log(event.nativeEvent.offsetX);
         this.addPointAxios({
             x: this.convertXReverse(+event.nativeEvent.offsetX),
             y: this.convertYReverse(+event.nativeEvent.offsetY),
@@ -74,7 +73,6 @@ class Plot extends React.Component {
                 data: point,
                 withCredentials: true
             }).then(result => {
-                console.log(result);
                 if (!result.data.successful) {
                     this.setErrMessage(result.data.data);
                     return false;

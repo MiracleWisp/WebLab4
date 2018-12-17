@@ -19,11 +19,25 @@ class SignupForm extends React.Component {
     };
 
     signUp = () => {
-        if (this.state.password !== this.state.repeatedPassword){
-            this.setState({
-                msg: 'Пароли не совпадают'
-            });
-            return
+        let username = this.state.username;
+        let password = this.state.password;
+        if (username.length > 10) {
+            this.setState({msg: 'Username too long'});
+            return false;
+        } else if (username.length < 4) {
+            this.setState({msg: 'Username too short'});
+            return false;
+        }
+        // else if ("") {
+        //     this.setState({msg: 'Invalid username'});
+        //     return false;
+        // }
+        else if (password.length < 3) {
+            this.setState({msg: 'Password too short'});
+            return false;
+        } else if (password !== this.state.repeatedPassword) {
+            this.setState({msg: 'Пароли не совпадают'});
+            return false;
         }
         axios({
             method: 'post',

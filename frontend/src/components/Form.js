@@ -37,7 +37,7 @@ const xs = [
 class Form extends Component {
     constructor(props) {
         super(props);
-        this.state = {x: {label: 0, value: 0}, y: 0, r: {label: 1, value: 1}}
+        this.state = {x: {label: 0, value: 0}, y: 0}
     }
 
     handleChangeX = (x) => {
@@ -64,11 +64,10 @@ class Form extends Component {
             data: {
                 x: this.state.x.value,
                 y: this.state.y,
-                r: this.state.r.value,
+                r: this.props.r,
             },
             withCredentials: true
         }).then(result => {
-            console.log(result);
             if (!result.data.successful) {
                 this.setErrMessage(result.data.data);
                 return false;
