@@ -48,17 +48,18 @@ class SignupForm extends React.Component {
                 password: this.state.password
             },
             withCredentials: true
-        }).then(_ => {
-            this.props.setConnection(true);
+        }).then(response => {
+            console.log(response);
             this.setState({
                 msg: 'Вы успешно зарегестрированы'
             });
+            console.log('msg',this.state.msg)
         }).catch(err => {
-            if (err.response.status === 409) this.setState({
+            console.log('err', err);
+            if (err.response !== undefined  && err.response.status === 409) this.setState({
                 msg: 'Имя пользователя уже занято'
             }); else {
                 console.log(err);
-                this.props.setConnection(false);
             }
         });
     };

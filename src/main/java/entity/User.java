@@ -1,5 +1,6 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @JsonProperty(access = Access.WRITE_ONLY)
     @NotNull
     @NotEmpty
     @Column(name = "password")
@@ -29,4 +31,7 @@ public class User {
     @JsonProperty(access = Access.READ_ONLY)
     List<Project> projects;
 
+    @JsonProperty(access = Access.READ_ONLY)
+    @ManyToMany(mappedBy = "collaborators")
+    List<Project> sharedProjects;
 }

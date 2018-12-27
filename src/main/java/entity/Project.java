@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -23,9 +25,17 @@ public class Project {
     User user;
 
     @JsonIgnore()
+    @ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+    @JoinTable(name="COLLABORATOR_PROJECT",
+            joinColumns={@JoinColumn(name="projectName")},
+            inverseJoinColumns={@JoinColumn(name="username")})
+    Set<User> collaborators;
+
+    @JsonIgnore()
     @Column(name = "sharableId")
     String sharableId;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "project")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     List<Point> points;

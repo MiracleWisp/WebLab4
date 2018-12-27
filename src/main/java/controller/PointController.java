@@ -53,6 +53,9 @@ public class PointController {
         User currentUser = userService.findUserByUsername(authentication.getName());
         Project currentProject = projectService.findProjectByName(projectName);
         Point newPoint = new Point(point.getX(), point.getY(), point.getR(), currentProject, currentUser);
+        if (!currentUser.equals(currentProject.getUser()) && !currentProject.getCollaborators().contains(currentUser)) {
+            return ResponseEntity.status(HttpStatus.OK).body(new Response(false, "Нет доступа к проекту"));
+        }
         pointService.addPoint(newPoint);
         return ResponseEntity.status(HttpStatus.OK).body(new Response(true, newPoint));
     }
@@ -64,5 +67,4 @@ public class PointController {
         Project currentProject = projectService.findProjectByName(projectName);
         return ResponseEntity.status(HttpStatus.OK).body(currentProject.getPoints());
     }
-
 }

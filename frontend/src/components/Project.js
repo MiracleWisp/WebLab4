@@ -21,6 +21,7 @@ class Project extends Component {
             console.log(err);
         });
     }
+
     render() {
         return (
             <div className="content-wrap">

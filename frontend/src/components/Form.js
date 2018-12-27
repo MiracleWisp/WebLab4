@@ -7,7 +7,9 @@ import Select from 'react-select'
 import connect from "react-redux/es/connect/connect";
 import axios from "axios";
 import {addPoint, changeR, setConnection} from "../redux/actions";
-
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 const rs = [
     {label: 1},
     {label: 2},
@@ -37,8 +39,16 @@ const xs = [
 class Form extends Component {
     constructor(props) {
         super(props);
-        this.state = {x: {label: 0, value: 0}, y: 0}
+        this.state = {x: {label: 0, value: 0}, y: 0, open:false}
     }
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState({ open: false });
+    };
 
     handleChangeX = (x) => {
         this.setState({x: x});
@@ -117,12 +127,36 @@ class Form extends Component {
                     disabled={this.state.invalid}
                     onClick={this.addPointAxios}
                 >ADD</Button>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                    open={this.state.open}
+                    autoHideDuration={2000}
+                    onClose={this.handleClose}
+                    ContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">Нет доступа</span>}
+                    action={
+                        <IconButton
+                            key="close"
+                            aria-label="Close"
+                            color="inherit"
+                            onClick={this.handleClose}
+                        >
+                            <CloseIcon/>
+                        </IconButton>
+                    }
+                />
             </div>
         )
     };
 
     setErrMessage(message) {
         console.log(message);
+        this.setState({open:true});
     }
 
 }

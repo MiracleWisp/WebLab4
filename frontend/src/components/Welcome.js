@@ -4,14 +4,12 @@ import Button from '@material-ui/core/Button';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
 import ProjectList from "./ProjectList";
+import ProjectTabs from "./ProjectTabs";
 
 
 const Welcome = (props) => (
     <div id='welcome'>
-        Добро пожаловать, {props.username} <br/>
-        Выберите готовый проект или создайте новый<br/>
-        <br/>
-        <ProjectList/>
+        <ProjectTabs/>
     </div>
 );
 

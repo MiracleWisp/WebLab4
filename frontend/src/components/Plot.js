@@ -3,13 +3,15 @@ import '../styles/plot.css'
 import {connect} from 'react-redux'
 import {addPoint, setConnection} from "../redux/actions";
 import axios from "axios";
-
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 class Plot extends React.Component {
 
     constructor(props) {
         super(props);
         this.plotClicked = this.plotClicked.bind(this);
-
+        this.state = {open: false}
     }
 
     // plotClicked(event){
@@ -73,6 +75,7 @@ class Plot extends React.Component {
                 data: point,
                 withCredentials: true
             }).then(result => {
+                console.log(result);
                 this.props.setConnection(true);
                 if (!result.data.successful) {
                     this.setErrMessage(result.data.data);
@@ -90,7 +93,16 @@ class Plot extends React.Component {
 
     setErrMessage(message) {
         console.log("Error: " + message);
+        this.setState({open:true});
     }
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState({ open: false });
+    };
 
     render() {
         return (
@@ -164,7 +176,33 @@ class Plot extends React.Component {
                         );
                     })}
                 </svg>
+
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                    open={this.state.open}
+                    autoHideDuration={2000}
+                    onClose={this.handleClose}
+                    ContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">Нет доступа</span>}
+                    action={
+                        <IconButton
+                            key="close"
+                            aria-label="Close"
+                            color="inherit"
+                            onClick={this.handleClose}
+                        >
+                            <CloseIcon/>
+                        </IconButton>
+                    }
+                />
             </div>
+
+
         )
     }
 }

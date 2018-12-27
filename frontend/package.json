@@ -7,6 +7,7 @@
     "@material-ui/icons": "^3.0.1",
     "axios": "^0.18.0",
     "install": "^0.12.2",
+    "notistack": "^0.4.1",
     "npm": "^6.5.0",
     "prop-types": "latest",
     "react": "^16.6.3",
@@ -16,8 +17,8 @@
     "react-router-redux": "^4.0.8",
     "react-scripts": "2.1.1",
     "react-select": "^2.1.2",
-    "redux": "^4.0.1",
-    "recompose": "latest"
+    "recompose": "latest",
+    "redux": "^4.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

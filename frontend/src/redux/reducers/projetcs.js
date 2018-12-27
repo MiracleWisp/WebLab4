@@ -1,7 +1,8 @@
 import {ADD_PROJECT, SET_PROJECTS} from "../actionTypes";
 
 const initialState = {
-    projects: []
+    projects: [],
+    sharedProjects: []
 };
 
 export function projectsReducer(state = initialState, action) {
