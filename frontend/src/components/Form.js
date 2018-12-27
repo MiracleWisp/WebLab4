@@ -60,7 +60,7 @@ class Form extends Component {
     addPointAxios = () => {
         axios({
             method: 'post',
-            url: 'http://localhost:8080/api/points',
+            url: `http://localhost:8080/api/projects/${this.props.projectName}/points`,
             data: {
                 x: this.state.x.value,
                 y: this.state.y,
@@ -84,7 +84,7 @@ class Form extends Component {
 
     render() {
         return (
-                <div className="form-wrap">
+            <div className="form-wrap">
                 <div id="form_header">
                     <h2>Add a point</h2>
                 </div>

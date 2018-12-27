@@ -3,15 +3,15 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom'
+import ProjectList from "./ProjectList";
 
 
 const Welcome = (props) => (
     <div id='welcome'>
         Добро пожаловать, {props.username} <br/>
-        Чтобы перейти к нашей замечательной лабе, нажмите кнопку ниже <br/>
-        <Button variant="contained" component={Link} to="/main">
-            ПЕРЕЙТИ К ГРАФИКУ
-        </Button>
+        Выберите готовый проект или создайте новый<br/>
+        <br/>
+        <ProjectList/>
     </div>
 );
 

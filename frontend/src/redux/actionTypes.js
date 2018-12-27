@@ -5,3 +5,5 @@ export const SIGN_IN = "SIGN_IN";
 export const SIGN_OUT = "SIGN_OUT";
 export const CHANGE_R = "CHANGE_R";
 export const SET_CONNECTION = "SET_CONNECTION";
+export const SET_PROJECTS = "SET_PROJECTS";
+export const ADD_PROJECT = "ADD_PROJECT";

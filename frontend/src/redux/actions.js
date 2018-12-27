@@ -1,16 +1,14 @@
-import {ADD_POINT, SET_POINTS, CHANGE_R, SIGN_IN, SIGN_OUT, SIGN_UP, SET_CONNECTION} from "./actionTypes";
+import {ADD_POINT, SET_POINTS, CHANGE_R, SIGN_IN, SIGN_OUT, SIGN_UP, SET_CONNECTION, ADD_PROJECT, SET_PROJECTS} from "./actionTypes";
 
 export const addPoint = (point) => ({
     type: ADD_POINT,
     point
 });
 
-export const setPoints =
-    (points) =>
-    ({
-        type: SET_POINTS,
-        points
-    });
+export const setPoints = (points) => ({
+    type: SET_POINTS,
+    points
+});
 
 export const signUp = (login, password) => ({
     type: SIGN_UP,
@@ -36,4 +34,14 @@ export const changeR = (r) => ({
 export const setConnection = (successful) => ({
     type: SET_CONNECTION,
     successful
+});
+
+export const setProjects = (projects) => ({
+    type: SET_PROJECTS,
+    projects
+});
+
+export const addProject = (project) => ({
+    type: ADD_PROJECT,
+    project
 });

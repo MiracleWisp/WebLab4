@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 import Header from './Header'
 import Main from './Main'
 import ProtectedRoute from './ProtectedRoute'
-import Checker from "./Checker"
+import Project from "./Project"
 import {signIn, signOut} from "../redux/actions";
 import SignupForm from "./SignupForm";
 import {Banner} from "./Banner";
@@ -18,7 +18,7 @@ class Root extends React.Component {
                 <Router>
                     <div>
                         <Route path="/*" component={Header}/>
-                        <ProtectedRoute path='/main' component={Checker}/>
+                        <ProtectedRoute path='/projects/:projectName' component={Project}/>
                         <Route exact path="/" component={Main}/>
                         <Route path='/signup' component={SignupForm}/>
                     </div>

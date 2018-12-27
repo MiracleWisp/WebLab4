@@ -1,6 +1,7 @@
 package controller;
 
 import entity.Point;
+import entity.Project;
 import entity.User;
 import main.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import service.PointService;
+import service.ProjectService;
 import service.UserService;
 
 import java.util.Arrays;
@@ -28,8 +30,11 @@ public class PointController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/points")
-    ResponseEntity<?> postPoint(@RequestBody Point point) {
+    @Autowired
+    private ProjectService projectService;
+
+    @PostMapping("/projects/{projectName}/points")
+    ResponseEntity<?> postPoint(@PathVariable("projectName") String projectName, @RequestBody Point point) {
         Set<Double> rightR = new HashSet<>(Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0));
 
         if (point.getX() < -3 || point.getX() > 5) {
@@ -45,17 +50,19 @@ public class PointController {
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userService.findUserByUsername( authentication.getName());
-        Point newPoint = new Point(point.getX(), point.getY(), point.getR(), currentUser);
+        User currentUser = userService.findUserByUsername(authentication.getName());
+        Project currentProject = projectService.findProjectByName(projectName);
+        Point newPoint = new Point(point.getX(), point.getY(), point.getR(), currentProject, currentUser);
         pointService.addPoint(newPoint);
-        return ResponseEntity.status(HttpStatus.OK).body(new Response (true, newPoint));
+        return ResponseEntity.status(HttpStatus.OK).body(new Response(true, newPoint));
     }
 
-    @GetMapping("/points")
-    ResponseEntity<?> getAllPoints() {
+    @GetMapping("/projects/{projectName}/points")
+    ResponseEntity<?> getAllPoints(@PathVariable("projectName") String projectName) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userService.findUserByUsername( authentication.getName());
-        return ResponseEntity.status(HttpStatus.OK).body(currentUser.getPoints());
+        User currentUser = userService.findUserByUsername(authentication.getName());
+        Project currentProject = projectService.findProjectByName(projectName);
+        return ResponseEntity.status(HttpStatus.OK).body(currentProject.getPoints());
     }
 
 }

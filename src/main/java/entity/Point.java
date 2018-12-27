@@ -33,15 +33,20 @@ public class Point implements Serializable{
     boolean inArea;
 
     @JsonIgnore()
-    @JoinColumn(name = "username", nullable = false)
+    @JoinColumn(name = "project", nullable = false)
     @ManyToOne
-    User user;
+    Project project;
 
-    public Point(double x, double y, double r, User user) {
+    @JsonIgnore()
+    @Column(name = "username", nullable = false)
+    String username;
+
+    public Point(double x, double y, double r, Project project, User user) {
         this.x = x;
         this.y = y;
         this.r = r;
-        this.user = user;
+        this.project = project;
+        this.username = user.getUsername();
         this.inArea = checkArea();
     }
 

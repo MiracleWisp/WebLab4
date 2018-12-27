@@ -7,12 +7,13 @@ import axios from "axios";
 import connect from "react-redux/es/connect/connect";
 import {setPoints} from "../redux/actions";
 
-class Checker extends Component {
+class Project extends Component {
     constructor(props) {
         super(props);
+        this.state = {projectName: props.match.params.projectName};
         axios({
             method: 'get',
-            url: 'http://localhost:8080/api/points',
+            url: `http://localhost:8080/api/projects/${this.state.projectName}/points`,
             withCredentials: true
         }).then(result => {
             this.props.setPoints(result.data);
@@ -23,8 +24,8 @@ class Checker extends Component {
     render() {
         return (
             <div className="content-wrap">
-                <Plot/>
-                <Form/>
+                <Plot projectName={this.state.projectName}/>
+                <Form projectName={this.state.projectName}/>
                 <PointTable/>
             </div>
         )
@@ -34,4 +35,4 @@ class Checker extends Component {
 export default connect(
     null,
     {setPoints}
-)(Checker);
+)(Project);

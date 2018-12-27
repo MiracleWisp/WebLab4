@@ -69,7 +69,7 @@ class Plot extends React.Component {
         if (Plot.validatePoint(point)) {
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/api/points',
+                url: `http://localhost:8080/api/projects/${this.props.projectName}/points`,
                 data: point,
                 withCredentials: true
             }).then(result => {
