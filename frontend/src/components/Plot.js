@@ -75,13 +75,13 @@ class Plot extends React.Component {
                 data: point,
                 withCredentials: true
             }).then(result => {
-                console.log(result);
+                //console.log(result);
                 this.props.setConnection(true);
                 if (!result.data.successful) {
                     this.setErrMessage(result.data.data);
                     return false;
                 } else {
-                    this.props.addPoint(result.data.data);
+                    //this.props.addPoint(result.data.data);
                     return true;
                 }
             }).catch(err => {
@@ -167,6 +167,7 @@ class Plot extends React.Component {
                     <text className="cls-5" transform="translate(158 13)">Y</text>
                     <text className="cls-5" transform="translate(289 143)">X</text>
                     {this.props.points.map(point => {
+                        console.log(point);
                         return (
                             <circle key={point.pointId} cx={this.convertX(point.x)} cy={this.convertY(point.y)} r="3"
                                     fill={point.inArea ? "#00ff00" : "#ff0000"}

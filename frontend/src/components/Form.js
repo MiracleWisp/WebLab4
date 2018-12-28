@@ -83,7 +83,7 @@ class Form extends Component {
                 this.setErrMessage(result.data.data);
                 return false;
             } else {
-                this.props.addPoint(result.data.data);
+                //this.props.addPoint(result.data.data);
                 return true;
             }
         }).catch(err => {

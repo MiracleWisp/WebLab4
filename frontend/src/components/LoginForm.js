@@ -9,10 +9,7 @@ import axios from 'axios';
 class LoginForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {username: "", password: "", msg: '', ws: new WebSocket('ws://localhost:8080/name')};
-        this.state.ws.onmessage = data => {
-            console.log(data);
-        }
+        this.state = {username: "", password: "", msg: ''};
     }
 
     handleChange = name => event => {
@@ -22,7 +19,6 @@ class LoginForm extends React.Component {
     };
 
     sign = () => {
-        this.state.ws.send(this.state.username);
         let formData = new FormData();
         formData.set('username', this.state.username);
         formData.set('password', this.state.password);

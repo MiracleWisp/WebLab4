@@ -72,12 +72,4 @@ public class Point implements Serializable{
     private boolean checkArea() {
         return (this.fits2() || this.fits3() || this.fits4());
     }
-
-    public static void main(String[] args) {
-        https://playmaker.gq
-        for (int i = 0; i < 10; i++) {
-            System.out.println(i);
-        }
-    }
-
 }

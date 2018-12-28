@@ -1,5 +1,7 @@
 package controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import entity.Point;
 import entity.Project;
 import entity.User;
@@ -11,13 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 import service.PointService;
 import service.ProjectService;
 import service.UserService;
+import websocket.SocketHandler;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -32,6 +35,9 @@ public class PointController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private SocketHandler socketHandler;
 
     @PostMapping("/projects/{projectName}/points")
     ResponseEntity<?> postPoint(@PathVariable("projectName") String projectName, @RequestBody Point point) {
@@ -57,7 +63,19 @@ public class PointController {
             return ResponseEntity.status(HttpStatus.OK).body(new Response(false, "Нет доступа к проекту"));
         }
         pointService.addPoint(newPoint);
-        return ResponseEntity.status(HttpStatus.OK).body(new Response(true, newPoint));
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<WebSocketSession> sessions = socketHandler.getSessions().getOrDefault(projectName, new ArrayList<>());
+        List<WebSocketSession> found = new ArrayList<>();
+        sessions.forEach(session -> {
+            try {
+                session.sendMessage(new TextMessage(mapper.writeValueAsString(newPoint)));
+            } catch (Exception e) {
+                found.add(session);
+            }
+        });
+        sessions.removeAll(found);
+        return ResponseEntity.status(HttpStatus.OK).body(new Response(true, "ok"));
     }
 
     @GetMapping("/projects/{projectName}/points")
